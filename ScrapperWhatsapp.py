@@ -1,10 +1,42 @@
 #!/usr/bin/env python3
-
-
 import argparse
 import sys
 import os
 import logging
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+import csv
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+
+
+def extract_contacts():
+    driver = webdriver.Firefox()
+    wait = WebDriverWait(driver, 5)
+    # driver = webdriver.Chrome()
+
+    driver.get("https://web.whatsapp.com")
+    print("Scan QR Code, And then Enter")
+    input()
+
+    recentList = driver.find_elements_by_xpath("//div[@class='_1qDvT _3R02z']")
+
+    for list in recentList:
+        driver.execute_script("arguments[0].scrollIntoView();", list)
+
+    wait.until(EC.presence_of_element_located((By.CLASS_NAME, '_357i8')))
+    contacts = driver.find_elements_by_class_name('_357i8')
+    nro=0
+    for contact in contacts:
+     nro +=1
+     print("[",str(nro) ,"]",contact.text)
+
+# Closing web browser
+    time.sleep(2)
+    driver.quit()
+
 
 parser = argparse.ArgumentParser(
     description='An OSINT tool to extract contacts and chats of Contact and Groups Whatsapp')
@@ -30,6 +62,7 @@ chat_parser.add_argument("-c", required=True, metavar="CONTACT",
                               dest="contact", help="need nanme contact")
 
 
+
 args = parser.parse_args()
 # Add missing param
 try:
@@ -43,7 +76,7 @@ if args.action == "contacts":
     #start_scrapping(args.email, args.quiet)
     print("A sin argumentos")
     print (args.lista)
-
+    extract_contacts()
 elif args.action == "groups":
     print (args.members)
     #if not re.match("^[0-9X]{10}", args.mask):
