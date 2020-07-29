@@ -1,5 +1,5 @@
 [config]
 BROWSER = firefox
 BROWSER_PATH = /home/user/.mozilla/firefox/xxxxxxxx.default or /home/user/.config/google-chrome/Default (this paths are for Linux)
-NAME = "John Vargas"
+NAME = "Juan Perez"
 PAGE = https://web.whatsapp.com/
